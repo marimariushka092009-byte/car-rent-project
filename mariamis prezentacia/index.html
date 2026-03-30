@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>F1F0 Motors - Home</title>
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0b0b0b;
+            overflow-x: hidden;
+            color: white;
+            padding: 28px 16px 60px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 3px;
+            background: #E10600;
+            top: 18%;
+            left: -50%;
+            transform: rotate(-10deg);
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 3px;
+            background: #E10600;
+            top: 55%;
+            left: -50%;
+            transform: rotate(-10deg);
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(225, 6, 0, 0.22);
+            padding: 18px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .brand h1 {
+            font-size: 28px;
+            font-style: italic;
+            letter-spacing: 2px;
+            color: white;
+            user-select: none;
+        }
+
+        .brand h1 span {
+            color: #E10600;
+        }
+
+        .brand p {
+            color: #aaa;
+            font-size: 11px;
+            letter-spacing: 3px;
+            margin-top: 2px;
+            user-select: none;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .nav a,
+        .nav button {
+            text-decoration: none;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-size: 13px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #222;
+            background: #1a1a1a;
+            color: white;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .nav a:hover,
+        .nav button:hover {
+            border-color: #E10600;
+            box-shadow: 0 0 18px rgba(225, 6, 0, 0.22);
+            transform: translateY(-1px);
+        }
+
+        .nav a.primary,
+        .nav button.primary {
+            background: #E10600;
+            border-color: #E10600;
+        }
+
+        .nav a.primary:hover,
+        .nav button.primary:hover {
+            background: #b00500;
+            border-color: #b00500;
+            box-shadow: 0 0 22px rgba(225, 6, 0, 0.35);
+        }
+
+        .hero {
+            margin-top: 18px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(225, 6, 0, 0.18);
+            padding: 22px;
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .hero-left h2 {
+            font-size: 22px;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .searchbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+            width: 420px;
+            max-width: 100%;
+        }
+
+        .searchbar input,
+        .searchbar select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #222;
+            background: #1a1a1a;
+            color: white;
+            font-size: 14px;
+            transition: 0.3s;
+            outline: none;
+        }
+
+        .searchbar input:focus,
+        .searchbar select:focus {
+            border-color: #E10600;
+        }
+
+        .search-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .search-actions {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .mini-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #222;
+            border-radius: 8px;
+            background: #1a1a1a;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            letter-spacing: 1px;
+            font-size: 12px;
+        }
+
+        .mini-btn:hover {
+            border-color: #E10600;
+            box-shadow: 0 0 18px rgba(225, 6, 0, 0.18);
+            transform: translateY(-1px);
+        }
+
+        .mini-btn.primary {
+            background: #E10600;
+            border-color: #E10600;
+        }
+
+        .mini-btn.primary:hover {
+            background: #b00500;
+            border-color: #b00500;
+            box-shadow: 0 0 22px rgba(225, 6, 0, 0.28);
+        }
+
+        .grid {
+            margin-top: 18px;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 14px;
+        }
+
+        .card {
+            grid-column: span 4;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            box-shadow: 0 0 35px rgba(225, 6, 0, 0.12);
+            overflow: hidden;
+            transition: 0.25s;
+            display: flex;
+            flex-direction: column;
+            min-height: 340px;
+        }
+
+        .card:hover {
+            border-color: #E10600;
+            box-shadow: 0 0 45px rgba(225, 6, 0, 0.22);
+            transform: translateY(-3px);
+        }
+
+        .img-wrap {
+            height: 170px;
+            background: #0f0f0f;
+            border-bottom: 1px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: contrast(1.05);
+        }
+
+        .img-placeholder {
+            color: #777;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(225, 6, 0, 0.95);
+            padding: 7px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(225, 6, 0, 0.25);
+        }
+
+        .content {
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .title {
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .meta {
+            color: #aaa;
+            font-size: 13px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 10px;
+        }
+
+        .meta span b {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .actions {
+            padding: 14px;
+            padding-top: 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 90px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #E10600;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            letter-spacing: 1px;
+            font-size: 13px;
+        }
+
+        .btn:hover {
+            background: #b00500;
+        }
+
+        .btn.secondary {
+            background: #1a1a1a;
+            border: 1px solid #222;
+        }
+
+        .btn.secondary:hover {
+            border-color: #E10600;
+            box-shadow: 0 0 18px rgba(225, 6, 0, 0.18);
+            background: #151515;
+        }
+
+        .status {
+            margin-top: 14px;
+            color: #aaa;
+            font-size: 13px;
+            text-align: center;
+            letter-spacing: 0.8px;
+        }
+
+        .error {
+            color: #ff8a8a;
+        }
+
+        .pager {
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pageinfo {
+            color: #aaa;
+            font-size: 13px;
+            letter-spacing: 0.8px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(225, 6, 0, 0.18);
+            padding: 30px 20px 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-brand h2 {
+            font-size: 24px;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+
+        .footer-brand h2 span {
+            color: #E10600;
+        }
+
+        .footer-brand p {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 4px;
+            letter-spacing: 2px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 14px;
+        }
+
+        .footer-social a {
+            color: white;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .footer-social a:hover {
+            color: #E10600;
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        .hero-banner {
+            margin-top: 18px;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #222;
+            box-shadow: 0 0 40px rgba(225, 6, 0, 0.18);
+            height: 260px;
+            background: #0f0f0f;
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transform: scale(1.02);
+            filter: contrast(1.05) brightness(0.85);
+        }
+
+        .hero-banner::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.15));
+        }
+
+        .hero-overlay {
+            position: absolute;
+            left: 18px;
+            bottom: 18px;
+            z-index: 2;
+            max-width: 700px;
+        }
+
+        .hero-overlay h2 {
+            font-size: 24px;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .hero-overlay p {
+            color: #ddd;
+            font-size: 13px;
+            letter-spacing: 0.8px;
+        }
+
+        .conbtn {
+            width: 140px;
+            height: 50px;
+            background-color: #b00500;
+            border-radius: 30px;
+            border: none;
+            font-weight: bolder;
+        }
+
+        .conbtn:hover {
+            background-color: #0b0b0b;
+            transform: translateY(2px);
+            transition: 1s;
+            border: 1px solid #b00500;
+            box-shadow: 0 0 5px #E10600, 0 0 15px #E10600, 0 0 30px rgba(225, 6, 0, 0.7);
+            cursor: pointer;
+        }
+
+        .contact {
+            display: flex;
+            justify-content: center;
+            margin-top: -65px;
+        }
+
+        a {
+            color: white;
+            font-weight: bolder;
+            text-decoration: none;
+        }
+
+        @media (max-width: 980px) {
+            .card {
+                grid-column: span 6;
+            }
+        }
+
+        @media (max-width: 620px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .card {
+                grid-column: span 12;
+            }
+
+            .search-row {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="brand">
+                <h1>F1<span>F0</span></h1>
+                <p>MOTORS</p>
+            </div>
+
+            <nav class="nav" id="navBar"></nav>
+        </header>
+
+        <section class="hero">
+            <div class="hero-left">
+                <h2>Rent a car • Drive like F1 🏁</h2>
+                <br>
+                <h3>Engineered for <span style="color:#E10600;">Adrenaline.</span></h3>
+            </div>
+
+            <div class="searchbar">
+                <input id="searchInput" type="text" placeholder="Search by brand / model..."
+                    oninput="applyClientSearch()" />
+
+                <div class="search-row">
+                    <select id="citySelect" onchange="applyServerFilters(true)">
+                        <option value="">All Cities</option>
+                    </select>
+
+                    <select id="capacitySelect" onchange="applyServerFilters(true)">
+                        <option value="">Any Seats</option>
+                        <option value="2">2 seats</option>
+                        <option value="4">4 seats</option>
+                        <option value="5">5 seats</option>
+                        <option value="7">7 seats</option>
+                    </select>
+
+                    <input id="startYear" type="number" placeholder="Start Year (e.g. 2018)"
+                        oninput="debouncedServerFilters()" />
+                    <input id="endYear" type="number" placeholder="End Year (e.g. 2024)"
+                        oninput="debouncedServerFilters()" />
+                </div>
+
+                <div class="search-actions">
+                    <button class="mini-btn" onclick="resetFilters()">RESET</button>
+                    <button id="popularBtn" class="mini-btn primary" onclick="togglePopular()">POPULAR</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="hero-banner">
+            <img src="car.1.jpg" alt="F1F0 banner">
+            <div class="hero-overlay">
+                <h2>Born for Speed • Built for You!</h2>
+                <p>Book in seconds • Drive in style</p>
+            </div>
+        </section>
+
+        <div id="status" class="status">Loading cars...</div>
+        <section id="carsGrid" class="grid"></section>
+
+        <div class="pager">
+            <button class="mini-btn" onclick="prevPage()">PREV</button>
+            <div id="pageInfo" class="pageinfo">Page 1 / 1</div>
+            <button class="mini-btn" onclick="nextPage()">NEXT</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>F1<span>F0</span></h2>
+                <p>Premium Car Rental Experience</p>
+            </div>
+
+            <div class="footer-social">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+
+        <br>
+        <div class="contact">
+            <button class="conbtn">
+                <a href="contact.html">CONTACT US</a>
+            </button>
+        </div>
+
+        <div class="footer-bottom">
+            © 2026 F1F0 Motors • All Rights Reserved
+        </div>
+    </footer>
+
+    <script>
+        const PAGE_SIZE = 12;
+
+        let currentPage = 1;
+        let totalPages = 1;
+        let currentServerList = [];
+        let viewList = [];
+        let popularMode = false;
+        let debounceTimer = null;
+        let favoriteIds = [];
+
+        function checkAge() {
+            Swal.fire({
+                title: "თქვენ ხართ 18+ ?",
+                text: "გთხოვთ დაადასტუროთ, რომ ხართ 18 წლის ან მეტი.",
+                icon: "warning",
+                background: "#111",
+                color: "#fff",
+                confirmButtonColor: "#E10600",
+                confirmButtonText: "კი, ვარ 18+",
+                showCancelButton: true,
+                cancelButtonText: "არა",
+                cancelButtonColor: "#444",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    buildNav();
+                    loadCities();
+                    loadFavoriteIds().finally(function () {
+                        applyServerFilters(true);
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "წვდომა შეზღუდულია",
+                        text: "ეს გვერდი მხოლოდ 18+ მომხმარებლებისთვისაა.",
+                        background: "#111",
+                        color: "#fff",
+                        confirmButtonColor: "#E10600",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                        window.location.href = "https://google.com";
+                    });
+                }
+            });
+        }
+
+        function getCurrentUser() {
+            try {
+                return JSON.parse(localStorage.getItem("user")) || null;
+            } catch {
+                return null;
+            }
+        }
+
+        function getUserPhone(user) {
+            if (!user) return "";
+            return user.phoneNumber || user.phone || user.mobile || "";
+        }
+
+        function getUserId(user) {
+            if (!user) return "";
+            return user.id || user.userId || user.userID || "";
+        }
+
+        function safeText(v) {
+            if (v === null || v === undefined) return "";
+            return String(v);
+        }
+
+        function money(v) {
+            if (v === null || v === undefined || v === "") return "-";
+            return safeText(v) + " ₾";
+        }
+
+        function firstAvailableImage(car) {
+            const candidates = [
+                car.imageUrl1, car.imageUrl2, car.imageUrl3,
+                car.image1, car.image2, car.image3
+            ].filter(Boolean);
+            return candidates.length ? candidates[0] : "";
+        }
+
+        function carTitle(car) {
+            const brand = car.brand || "";
+            const model = car.model || "";
+            const year = car.year || "";
+            const base = (brand + " " + model).trim() || "Car";
+            return year ? base + " • " + year : base;
+        }
+
+        function setStatus(text, isError = false) {
+            const status = document.getElementById("status");
+            status.classList.toggle("error", !!isError);
+            status.innerHTML = text;
+        }
+
+        function updatePager() {
+            document.getElementById("pageInfo").textContent = "Page " + currentPage + " / " + totalPages;
+            if (popularMode) {
+                document.getElementById("pageInfo").textContent = "POPULAR LIST";
+            }
+        }
+
+        function buildNav() {
+            const user = getCurrentUser();
+            const nav = document.getElementById("navBar");
+
+            if (user) {
+                nav.innerHTML = `
+                    <a href="index.html">HOME</a>
+                    <a href="add-car.html">ADD CAR</a>
+                    <a href="profile.html">PROFILE</a>
+                    <button class="primary" onclick="logout()">LOGOUT</button>
+                `;
+            } else {
+                nav.innerHTML = `
+                    <a href="register.html">REGISTER</a>
+                    <a class="primary" href="login.html">LOGIN</a>
+                `;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            location.href = "index.html";
+        }
+
+        function isFavorite(id) {
+            return favoriteIds.includes(Number(id));
+        }
+
+        function renderCars(list) {
+            const grid = document.getElementById("carsGrid");
+
+            if (!list || !list.length) {
+                grid.innerHTML = "";
+                setStatus("No cars found 😕");
+                return;
+            }
+
+            setStatus("Available cars: <b>" + list.length + "</b>");
+
+            grid.innerHTML = list.map(function (car) {
+                const img = firstAvailableImage(car);
+                const price = car.price;
+                const capacity = car.capacity;
+                const transmission = car.transmission || "-";
+                const city = car.city || "-";
+                const id = car.id || "";
+                const fav = isFavorite(id);
+
+                return `
+                    <div class="card">
+                        <div class="img-wrap">
+                            <div class="badge">${safeText(transmission).toUpperCase()}</div>
+                            ${img ? `<img src="${img}" alt="car" />` : `<div class="img-placeholder">NO IMAGE</div>`}
+                        </div>
+
+                        <div class="content">
+                            <div class="title">${carTitle(car)}</div>
+                            <div class="meta">
+                                <span><b>Price:</b> ${money(price)}</span>
+                                <span><b>City:</b> ${safeText(city)}</span>
+                                <span><b>Seats:</b> ${safeText(capacity || "-")}</span>
+                                <span><b>Year:</b> ${safeText(car.year || "-")}</span>
+                            </div>
+                        </div>
+
+                        <div class="actions">
+                            <button class="btn" onclick="toggleFavorite('${id}')">
+                                ${fav ? "FAVORITED" : "FAVORITE"}
+                                <i class="fa-solid fa-heart fa-beat-fade" style="color: rgb(255, 255, 255);"></i>
+                            </button>
+                            <button class="btn secondary" onclick="goToDetails('${id}')">DETAILS</button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function goToDetails(id) {
+            location.href = "details.html?id=" + id;
+        }
+
+        function applyClientSearch() {
+            const q = document.getElementById("searchInput").value.trim().toLowerCase();
+            viewList = currentServerList.filter(function (car) {
+                const title = carTitle(car).toLowerCase();
+                return !q || title.includes(q);
+            });
+            renderCars(viewList);
+        }
+
+        function buildFilterParams(page) {
+            const params = new URLSearchParams();
+            params.set("pageIndex", String(page));
+            params.set("pageSize", String(PAGE_SIZE));
+
+            const city = document.getElementById("citySelect").value.trim();
+            const capacity = document.getElementById("capacitySelect").value.trim();
+            const startYear = document.getElementById("startYear").value.trim();
+            const endYear = document.getElementById("endYear").value.trim();
+
+            if (city) params.set("city", city);
+            if (capacity) params.set("capacity", capacity);
+            if (startYear) params.set("startYear", startYear);
+            if (endYear) params.set("endYear", endYear);
+
+            return params;
+        }
+
+        function applyServerFilters(resetToFirstPage) {
+            popularMode = false;
+            document.getElementById("popularBtn").classList.add("primary");
+            document.getElementById("popularBtn").textContent = "POPULAR";
+
+            if (resetToFirstPage) currentPage = 1;
+
+            setStatus("Loading cars...");
+            const params = buildFilterParams(currentPage);
+
+            axios.get("https://rentcar.stepprojects.ge/api/Car/filter?" + params.toString())
+                .then(function (response) {
+                    const res = response.data || {};
+                    currentPage = res.currentPage || currentPage;
+                    totalPages = res.totalPages || 1;
+                    currentServerList = Array.isArray(res.data) ? res.data : [];
+                    viewList = currentServerList;
+                    updatePager();
+                    applyClientSearch();
+                })
+                .catch(function () {
+                    setStatus("Failed to load cars from API ❌", true);
+                    document.getElementById("carsGrid").innerHTML = "";
+                    totalPages = 1;
+                    updatePager();
+                });
+        }
+
+        function debouncedServerFilters() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => applyServerFilters(true), 450);
+        }
+
+        function togglePopular() {
+            if (!popularMode) {
+                popularMode = true;
+                currentPage = 1;
+                totalPages = 1;
+
+                document.getElementById("citySelect").value = "";
+                document.getElementById("capacitySelect").value = "";
+                document.getElementById("startYear").value = "";
+                document.getElementById("endYear").value = "";
+
+                setStatus("Loading popular cars...");
+                axios.get("https://rentcar.stepprojects.ge/api/Car/popular")
+                    .then(function (response) {
+                        currentServerList = Array.isArray(response.data) ? response.data : [];
+                        viewList = currentServerList;
+                        updatePager();
+                        applyClientSearch();
+                    })
+                    .catch(function () {
+                        setStatus("Failed to load popular cars ❌", true);
+                        currentServerList = [];
+                        viewList = [];
+                        updatePager();
+                        renderCars([]);
+                    });
+
+                document.getElementById("popularBtn").textContent = "POPULAR ✓";
+            } else {
+                popularMode = false;
+                document.getElementById("popularBtn").textContent = "POPULAR";
+                applyServerFilters(true);
+            }
+        }
+
+        function nextPage() {
+            if (popularMode) return;
+            if (currentPage >= totalPages) return;
+            currentPage++;
+            applyServerFilters(false);
+        }
+
+        function prevPage() {
+            if (popularMode) return;
+            if (currentPage <= 1) return;
+            currentPage--;
+            applyServerFilters(false);
+        }
+
+        function resetFilters() {
+            document.getElementById("searchInput").value = "";
+            document.getElementById("citySelect").value = "";
+            document.getElementById("capacitySelect").value = "";
+            document.getElementById("startYear").value = "";
+            document.getElementById("endYear").value = "";
+            popularMode = false;
+            currentPage = 1;
+            applyServerFilters(true);
+        }
+
+        function loadCities() {
+            axios.get("https://rentcar.stepprojects.ge/api/Car/cities")
+                .then(function (response) {
+                    const cities = Array.isArray(response.data) ? response.data : [];
+                    const select = document.getElementById("citySelect");
+
+                    cities.forEach(function (city) {
+                        const opt = document.createElement("option");
+                        opt.value = city;
+                        opt.textContent = city;
+                        select.appendChild(opt);
+                    });
+                })
+                .catch(function () { });
+        }
+
+        function loadFavoriteIds() {
+            const user = getCurrentUser();
+            const phone = getUserPhone(user);
+
+            if (!phone) {
+                favoriteIds = [];
+                return Promise.resolve();
+            }
+
+            return axios.get("https://rentcar.stepprojects.ge/api/Users/" + phone + "/favorite-cars")
+                .then(function (response) {
+                    const arr = Array.isArray(response.data) ? response.data : [];
+                    favoriteIds = arr.map(function (car) {
+                        return Number(car.id);
+                    }).filter(Boolean);
+                })
+                .catch(function () {
+                    favoriteIds = [];
+                });
+        }
+
+        function toggleFavorite(id) {
+            const user = getCurrentUser();
+
+            if (!user) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "ავტორიზაცია საჭიროა",
+                    text: "ფავორიტებში დასამატებლად ჯერ გაიარე ავტორიზაცია.",
+                    background: "#111",
+                    color: "#fff",
+                    confirmButtonColor: "#E10600"
+                }).then(() => {
+                    location.href = "login.html";
+                });
+                return;
+            }
+
+            const userId = getUserId(user);
+            const carId = Number(id);
+
+            if (!userId || !carId) {
+                Swal.fire({
+                    icon: "error",
+                    title: "შეცდომა",
+                    text: "ფავორიტში დამატება ვერ მოხერხდა.",
+                    background: "#111",
+                    color: "#fff",
+                    confirmButtonColor: "#E10600"
+                });
+                return;
+            }
+
+            axios.post("https://rentcar.stepprojects.ge/api/Users/" + userId + "/favorites/" + carId)
+                .then(function () {
+                    if (!favoriteIds.includes(carId)) {
+                        favoriteIds.push(carId);
+                    }
+                    renderCars(viewList);
+
+                    Swal.fire({
+                        icon: "success",
+                        title: "დამატებულია",
+                        text: "მანქანა დაემატა ფავორიტებში.",
+                        background: "#111",
+                        color: "#fff",
+                        confirmButtonColor: "#E10600"
+                    });
+                })
+                .catch(function () {
+                    Swal.fire({
+                        icon: "error",
+                        title: "შეცდომა",
+                        text: "ფავორიტში დამატება ვერ მოხერხდა.",
+                        background: "#111",
+                        color: "#fff",
+                        confirmButtonColor: "#E10600"
+                    });
+                });
+        }
+
+        checkAge();
+    </script>
+</body>
+
+</html>

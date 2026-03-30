@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>F1F0 Motors - Profile</title>
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0b0b0b;
+            color: white;
+            padding: 28px 16px 60px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 3px;
+            background: #E10600;
+            top: 18%;
+            left: -50%;
+            transform: rotate(-10deg);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 3px;
+            background: #E10600;
+            top: 58%;
+            left: -50%;
+            transform: rotate(-10deg);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(225, 6, 0, 0.18);
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .brand h1 {
+            font-size: 28px;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+
+        .brand h1 span {
+            color: #E10600;
+        }
+
+        .brand p {
+            color: #aaa;
+            font-size: 11px;
+            letter-spacing: 3px;
+            margin-top: 2px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav a,
+        .nav button {
+            text-decoration: none;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-size: 13px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #222;
+            background: #1a1a1a;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav a:hover,
+        .nav button:hover {
+            border-color: #E10600;
+            box-shadow: 0 0 18px rgba(225, 6, 0, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .nav .primary {
+            background: #E10600;
+            border-color: #E10600;
+        }
+
+        .nav .primary:hover {
+            background: #b00500;
+            border-color: #b00500;
+        }
+
+        .profile-box {
+            margin-top: 18px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            box-shadow: 0 0 35px rgba(225, 6, 0, 0.12);
+            padding: 24px;
+        }
+
+        .profile-top {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #E10600, #111);
+            border: 3px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            font-weight: bold;
+            box-shadow: 0 0 25px rgba(225, 6, 0, 0.25);
+        }
+
+        .profile-name {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .profile-meta {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .section {
+            margin-top: 18px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            box-shadow: 0 0 35px rgba(225, 6, 0, 0.12);
+            padding: 20px;
+        }
+
+        .section h2 {
+            margin-bottom: 16px;
+            font-size: 22px;
+            letter-spacing: 0.5px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 14px;
+        }
+
+        .card {
+            grid-column: span 4;
+            background: #151515;
+            border: 1px solid #222;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.25s;
+        }
+
+        .card:hover {
+            border-color: #E10600;
+            box-shadow: 0 0 30px rgba(225, 6, 0, 0.18);
+            transform: translateY(-3px);
+        }
+
+        .img-wrap {
+            height: 180px;
+            background: #0f0f0f;
+            border-bottom: 1px solid #222;
+        }
+
+        .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .no-img {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .content {
+            padding: 14px;
+        }
+
+        .title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .meta {
+            color: #aaa;
+            font-size: 13px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .meta b {
+            color: white;
+        }
+
+        .actions {
+            padding: 0 14px 14px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #E10600;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #b00500;
+        }
+
+        .rented-box {
+            display: grid;
+            gap: 12px;
+        }
+
+        .rent-item {
+            background: #151515;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 16px;
+            color: #ddd;
+            line-height: 1.8;
+        }
+
+        .empty {
+            color: #888;
+            font-size: 14px;
+        }
+
+        @media (max-width: 980px) {
+            .card {
+                grid-column: span 6;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .profile-top {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .avatar {
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .card {
+                grid-column: span 12;
+            }
+
+            .meta {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="brand">
+                <h1>F1<span>F0</span></h1>
+                <p>MOTORS</p>
+            </div>
+            <nav class="nav" id="navBar"></nav>
+        </header>
+
+        <div class="profile-box" id="profileBox">
+            <div class="profile-top">
+                <div class="avatar">U</div>
+                <div>
+                    <div class="profile-name">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Rented Cars</h2>
+            <div id="rentedCars" class="rented-box"></div>
+        </div>
+
+        <div class="section">
+            <h2>Favorite Cars</h2>
+            <div id="favoriteCars" class="grid"></div>
+        </div>
+
+        <div class="section">
+            <h2>My Added Cars</h2>
+            <div id="myCars" class="grid"></div>
+        </div>
+    </div>
+
+    <script>
+        function getCurrentUser() {
+            try {
+                return JSON.parse(localStorage.getItem("user")) || null;
+            } catch {
+                return null;
+            }
+        }
+
+        function getUserPhone(user) {
+            if (!user) return "";
+            return user.phoneNumber || user.phone || user.mobile || "";
+        }
+
+        function getUserEmail(user) {
+            if (!user) return "";
+            return user.email || user.mail || user.userEmail || "";
+        }
+
+        function getUserName(user) {
+            if (!user) return "";
+            const fullName =
+                (user.firstName || user.name || "") + " " +
+                (user.lastName || user.surname || "");
+            return fullName.trim();
+        }
+
+        function buildNav() {
+            const user = getCurrentUser();
+            const nav = document.getElementById("navBar");
+
+            if (user) {
+                nav.innerHTML = `
+                    <a href="index.html">HOME</a>
+                    <a href="add-car.html">ADD CAR</a>
+                    <button class="primary" onclick="logout()">LOGOUT</button>
+                `;
+            } else {
+                nav.innerHTML = `
+                    <a href="register.html">REGISTER</a>
+                    <a class="primary" href="login.html">LOGIN</a>
+                `;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            location.href = "index.html";
+        }
+
+        function getInitial(name, phone) {
+            if (name && name.trim()) return name.trim()[0].toUpperCase();
+            if (phone && phone.trim()) return phone.trim()[0].toUpperCase();
+            return "U";
+        }
+
+        function carImage(car) {
+            return car.imageUrl1 || car.imageUrl2 || car.imageUrl3 || car.image1 || car.image2 || car.image3 || "";
+        }
+
+        function safe(v) {
+            return v === null || v === undefined || v === "" ? "-" : v;
+        }
+
+        function carCard(car) {
+            const img = carImage(car);
+
+            return `
+                <div class="card">
+                    <div class="img-wrap">
+                        ${img ? `<img src="${img}" alt="car">` : `<div class="no-img">NO IMAGE</div>`}
+                    </div>
+
+                    <div class="content">
+                        <div class="title">${safe(car.brand)} ${safe(car.model)} ${car.year ? "• " + car.year : ""}</div>
+                        <div class="meta">
+                            <span><b>Price:</b> ${safe(car.price)} ₾</span>
+                            <span><b>City:</b> ${safe(car.city)}</span>
+                            <span><b>Seats:</b> ${safe(car.capacity)}</span>
+                            <span><b>Transmission:</b> ${safe(car.transmission)}</span>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn" onclick="location.href='details.html?id=${car.id}'">DETAILS</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProfile(userData) {
+            const user = getCurrentUser() || {};
+            const name = getUserName(userData) || getUserName(user) || "User Profile";
+            const phone = getUserPhone(userData) || getUserPhone(user);
+            const email = getUserEmail(userData) || getUserEmail(user);
+            const initial = getInitial(name, phone);
+
+            document.getElementById("profileBox").innerHTML = `
+                <div class="profile-top">
+                    <div class="avatar">${initial}</div>
+                    <div>
+                        <div class="profile-name">${name}</div>
+                        <div class="profile-meta"><i class="fa-solid fa-phone"></i> ${phone || "-"}</div>
+                        <div class="profile-meta"><i class="fa-solid fa-envelope"></i> ${email || "-"}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadUserInfo() {
+            const user = getCurrentUser();
+            const phone = getUserPhone(user);
+
+            if (!phone) {
+                location.href = "login.html";
+                return;
+            }
+
+            axios.get("https://rentcar.stepprojects.ge/api/Users/" + phone)
+                .then(function (response) {
+                    renderProfile(response.data || {});
+                })
+                .catch(function () {
+                    renderProfile(user || {});
+                });
+        }
+
+        function loadRentedCars() {
+            const user = getCurrentUser();
+            const phone = getUserPhone(user);
+
+            axios.get("https://rentcar.stepprojects.ge/Purchase/" + phone)
+                .then(function (response) {
+                    const box = document.getElementById("rentedCars");
+                    const data = response.data;
+
+                    if (typeof data === "string") {
+                        box.innerHTML = `<div class="empty">${data}</div>`;
+                        return;
+                    }
+
+                    if (!Array.isArray(data) || !data.length) {
+                        box.innerHTML = `<div class="empty">No rented cars</div>`;
+                        return;
+                    }
+
+                    box.innerHTML = data.map(function (item) {
+                        return `
+                            <div class="rent-item">
+                                <div><b>Car:</b> ${safe(item.brand)} ${safe(item.model)}</div>
+                                <div><b>City:</b> ${safe(item.city)}</div>
+                                <div><b>Paid:</b> ${safe(item.totalPrice || item.price)} ₾</div>
+                                <div><b>Days:</b> ${safe(item.multiplier || item.days)}</div>
+                            </div>
+                        `;
+                    }).join("");
+                })
+                .catch(function () {
+                    document.getElementById("rentedCars").innerHTML = `<div class="empty">No rented cars</div>`;
+                });
+        }
+
+        function loadFavoriteCars() {
+            const user = getCurrentUser();
+            const phone = getUserPhone(user);
+
+            axios.get("https://rentcar.stepprojects.ge/api/Users/" + phone + "/favorite-cars")
+                .then(function (response) {
+                    const cars = Array.isArray(response.data) ? response.data : [];
+
+                    document.getElementById("favoriteCars").innerHTML = cars.length
+                        ? cars.map(carCard).join("")
+                        : `<div class="empty">No favorite cars</div>`;
+                })
+                .catch(function () {
+                    document.getElementById("favoriteCars").innerHTML = `<div class="empty">No favorite cars</div>`;
+                });
+        }
+
+        function loadMyCars() {
+            const user = getCurrentUser();
+            const phone = getUserPhone(user);
+
+            axios.get("https://rentcar.stepprojects.ge/api/Car/byPhone", {
+                params: {
+                    PhoneNumber: phone
+                }
+            })
+                .then(function (response) {
+                    const cars = Array.isArray(response.data) ? response.data : [];
+
+                    document.getElementById("myCars").innerHTML = cars.length
+                        ? cars.map(carCard).join("")
+                        : `<div class="empty">No added cars</div>`;
+                })
+                .catch(function () {
+                    document.getElementById("myCars").innerHTML = `<div class="empty">No added cars</div>`;
+                });
+        }
+
+        const currentUser = getCurrentUser();
+
+        if (!currentUser) {
+            location.href = "login.html";
+        } else {
+            buildNav();
+            loadUserInfo();
+            loadRentedCars();
+            loadFavoriteCars();
+            loadMyCars();
+        }
+    </script>
+</body>
+
+</html>

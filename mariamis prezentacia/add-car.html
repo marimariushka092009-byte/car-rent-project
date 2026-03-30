@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>F1F0 Motors - Add Car</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #0b0b0b;
+      color: white;
+      padding: 28px 16px 60px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 12px;
+      box-shadow: 0 0 40px rgba(225, 6, 0, 0.18);
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .brand h1 {
+      font-size: 28px;
+      font-style: italic;
+      letter-spacing: 2px;
+    }
+
+    .brand h1 span {
+      color: #e10600;
+    }
+
+    .brand p {
+      color: #aaa;
+      font-size: 11px;
+      letter-spacing: 3px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav a,
+    .nav button {
+      text-decoration: none;
+      font-weight: bold;
+      letter-spacing: 1px;
+      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #222;
+      background: #1a1a1a;
+      color: white;
+      cursor: pointer;
+    }
+
+    .nav .primary {
+      background: #e10600;
+      border-color: #e10600;
+    }
+
+    .panel {
+      margin-top: 18px;
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 12px;
+      box-shadow: 0 0 35px rgba(225, 6, 0, 0.12);
+      padding: 22px;
+    }
+
+    .panel h2 {
+      margin-bottom: 18px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field label {
+      color: #aaa;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #222;
+      background: #1a1a1a;
+      color: white;
+      outline: none;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: #e10600;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #e10600;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      letter-spacing: 1px;
+      font-size: 14px;
+    }
+
+    .submit-btn:hover {
+      background: #b00500;
+    }
+
+    .status {
+      margin-top: 14px;
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    @media (max-width: 720px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <h1>F1<span>F0</span></h1>
+        <p>MOTORS</p>
+      </div>
+      <nav class="nav" id="navBar"></nav>
+    </header>
+
+    <div class="panel">
+      <h2>Add New Car</h2>
+
+      <form id="carForm">
+        <div class="form-grid">
+          <div class="field">
+            <label>Brand</label>
+            <input type="text" id="brand" placeholder="მაგ: BMW" />
+          </div>
+
+          <div class="field">
+            <label>Model</label>
+            <input type="text" id="model" placeholder="მაგ: M5" />
+          </div>
+
+          <div class="field">
+            <label>Year</label>
+            <input type="number" id="year" placeholder="მაგ: 2022" />
+          </div>
+
+          <div class="field">
+            <label>Price (per day)</label>
+            <input type="number" id="price" placeholder="მაგ: 250" />
+          </div>
+
+          <div class="field">
+            <label>City</label>
+            <input type="text" id="city" placeholder="მაგ: Tbilisi" />
+          </div>
+
+          <div class="field">
+            <label>Capacity</label>
+            <input type="number" id="capacity" placeholder="მაგ: 5" />
+          </div>
+
+          <div class="field">
+            <label>Transmission</label>
+            <select id="transmission">
+              <option value="">Choose</option>
+              <option value="Automatic">Automatic</option>
+              <option value="Manual">Manual</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Fuel Capacity</label>
+            <input type="number" id="fuelCapacity" placeholder="მაგ: 60" />
+          </div>
+
+          <div class="field full">
+            <label>Image 1</label>
+            <input type="file" id="image1" accept="image/*" />
+          </div>
+
+          <div class="field full">
+            <label>Image 2</label>
+            <input type="file" id="image2" accept="image/*" />
+          </div>
+
+          <div class="field full">
+            <label>Image 3</label>
+            <input type="file" id="image3" accept="image/*" />
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">ADD CAR</button>
+        <div class="status" id="status"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function getUser() {
+      try {
+        return JSON.parse(localStorage.getItem("user")) || null;
+      } catch {
+        return null;
+      }
+    }
+
+    function getPhone(user) {
+      if (!user) return "";
+      return user.phoneNumber || user.phone || "";
+    }
+
+    function logout() {
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      location.href = "index.html";
+    }
+
+    function renderNav() {
+      const user = getUser();
+      const nav = document.getElementById("navBar");
+
+      if (user) {
+        nav.innerHTML = `
+          <a href="index.html">HOME</a>
+          <a href="add-car.html">ADD CAR</a>
+          <a href="profile.html">PROFILE</a>
+          <button class="primary" onclick="logout()">LOGOUT</button>
+        `;
+      } else {
+        nav.innerHTML = `
+          <a href="register.html">REGISTER</a>
+          <a class="primary" href="login.html">LOGIN</a>
+        `;
+      }
+    }
+
+    const currentUser = getUser();
+
+    if (!currentUser) {
+      location.href = "login.html";
+    }
+
+    renderNav();
+
+    const form = document.getElementById("carForm");
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const brand = document.getElementById("brand").value.trim();
+      const model = document.getElementById("model").value.trim();
+      const year = document.getElementById("year").value.trim();
+      const price = document.getElementById("price").value.trim();
+      const city = document.getElementById("city").value.trim();
+      const capacity = document.getElementById("capacity").value.trim();
+      const transmission = document.getElementById("transmission").value;
+      const fuelCapacity = document.getElementById("fuelCapacity").value.trim();
+
+      const image1 = document.getElementById("image1").files[0];
+      const image2 = document.getElementById("image2").files[0];
+      const image3 = document.getElementById("image3").files[0];
+
+      const phoneNumber = getPhone(currentUser);
+      const status = document.getElementById("status");
+
+      if (
+        !brand ||
+        !model ||
+        !year ||
+        !price ||
+        !city ||
+        !capacity ||
+        !transmission ||
+        !fuelCapacity ||
+        !image1 ||
+        !image2 ||
+        !image3
+      ) {
+        Swal.fire({
+          icon: "warning",
+          title: "Fill all fields",
+          text: "ყველა ველი და სამივე სურათი აუცილებელია",
+          background: "#111",
+          color: "#fff",
+          confirmButtonColor: "#E10600"
+        });
+        return;
+      }
+
+      if (!phoneNumber) {
+        Swal.fire({
+          icon: "error",
+          title: "User error",
+          text: "მომხმარებლის ნომერი ვერ მოიძებნა",
+          background: "#111",
+          color: "#fff",
+          confirmButtonColor: "#E10600"
+        });
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("brand", brand);
+      formData.append("model", model);
+      formData.append("year", year);
+      formData.append("price", price);
+      formData.append("city", city);
+      formData.append("capacity", capacity);
+      formData.append("transmission", transmission);
+      formData.append("fuelCapacity", fuelCapacity);
+      formData.append("phoneNumber", phoneNumber);
+      formData.append("image1", image1);
+      formData.append("image2", image2);
+      formData.append("image3", image3);
+
+      status.textContent = "Uploading...";
+
+      try {
+        await axios.post("https://rentcar.stepprojects.ge/api/Car", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        });
+
+        status.textContent = "Car added successfully";
+
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "მანქანა წარმატებით დაემატა",
+          background: "#111",
+          color: "#fff",
+          confirmButtonColor: "#E10600"
+        }).then(() => {
+          location.href = "profile.html";
+        });
+      } catch (error) {
+        status.textContent = "Upload failed";
+
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "მანქანის დამატება ვერ მოხერხდა",
+          background: "#111",
+          color: "#fff",
+          confirmButtonColor: "#E10600"
+        });
+      }
+    });
+  </script>
+</body>
+</html>

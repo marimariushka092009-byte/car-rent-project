@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css />
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #0b0b0b;
+            color: white;
+            padding: 40px 16px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 34px;
+            letter-spacing: 2px;
+            font-style: italic;
+        }
+
+        header h1 span {
+            color: #E10600;
+        }
+
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .contact-info,
+        .contact-form {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(225, 6, 0, 0.15);
+        }
+
+        .contact-info h2,
+        .contact-form h2 {
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .contact-info p {
+            margin: 12px 0;
+            color: #aaa;
+            font-size: 20px;
+        }
+
+        .contact-info i {
+            color: #E10600;
+            margin-right: 8px;
+        }
+
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #222;
+            background: #1a1a1a;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #E10600;
+            box-shadow: 0 0 10px rgba(225, 6, 0, 0.3);
+        }
+
+        .contact-form button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #E10600;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .contact-form button:hover {
+            background: #b00500;
+            box-shadow: 0 0 20px rgba(225, 6, 0, 0.4);
+        }
+
+        .footer {
+            margin-top: 40px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(225, 6, 0, 0.18);
+            padding: 30px 20px 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-brand h2 {
+            font-size: 24px;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+
+        .footer-brand h2 span {
+            color: #E10600;
+        }
+
+        .footer-brand p {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 4px;
+            letter-spacing: 2px;
+        }
+
+
+        .footer-social {
+            display: flex;
+            gap: 14px;
+        }
+
+        .footer-social a {
+            color: white;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .footer-social a:hover {
+            color: #E10600;
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        .conbtn {
+            width: 120px;
+            height: 50px;
+            background-color: #b00500;
+            border-radius: 30px;
+            border: none;
+            font-weight: bolder;
+        }
+
+        .conbtn:hover {
+            background-color: #0b0b0b;
+            transform: translateY(2px);
+            transition: 1s;
+            border: 1px solid #b00500;
+            box-shadow:
+                0 0 5px #E10600,
+                0 0 15px #E10600,
+                0 0 30px rgba(225, 6, 0, 0.7);
+            cursor: pointer;
+
+
+        }
+
+        a {
+            color: white;
+            font-weight: bolder;
+            text-decoration: none;
+        }
+
+        .contact {
+            display: flex;
+            justify-content: center;
+            margin-top: -65px;
+        }
+
+
+
+        @media(max-width:800px) {
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+
+
+
+
+</head>
+
+<body>
+    <div class="container">
+
+        <header>
+            <h1>Contact <span>F1F0</span> Motors</h1>
+        </header>
+
+
+        <div class="contact-wrapper">
+
+            <div class="contact-info">
+                <h2>Get in Touch</h2>
+                <p><i class="fa-solid fa-phone fa-shake" style="color: rgb(199, 5, 5);"></i> +995 555 12
+                    34 56</p>
+                <p><i class="fa-solid fa-envelope fa-bounce" style="color: rgb(199, 5, 5);"></i>info@f1f0motors.com</p>
+                <p><i class="fa-notdog fa-solid fa-location-dot fa-flip" style="color: rgb(199, 5, 5);"></i> Tbilisi,
+                    Georgia</p>
+                <p><i class="fa-solid fa-clock fa-spin-pulse" style="color: rgb(199, 5, 5);"></i> Mon - Sun: 09:00 -
+                    22:00</p>
+
+
+            </div>
+
+            <div class="contact-form">
+                <h2>Send Message</h2>
+                <input type="text" placeholder="Your Name">
+                <input type="email" placeholder="Your Email">
+                <textarea rows="5" placeholder="Your Message"></textarea>
+                <button>SEND MESSAGE</button>
+            </div>
+
+        </div>
+
+    </div>
+    <footer class="footer">
+        <div class="footer-content">
+
+            <div class="footer-brand">
+                <h2>F1<span>F0</span></h2>
+                <p>Premium Car Rental Experience</p>
+            </div>
+
+
+
+            <div class="footer-social">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+
+        </div>
+        <br>
+        <div class="contact">
+
+            <button class="conbtn">
+                <a href="index.html">HOME PAGE</a>
+            </button>
+        </div>
+        <div class="footer-bottom">
+            © 2026 F1F0 Motors • All Rights Reserved
+        </div>
+    </footer>
+
+</body>
+
+</html>

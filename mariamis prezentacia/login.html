@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>F1F0 Motors - Sign In</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: #0b0b0b;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 3px;
+      background: #e10600;
+      top: 30%;
+      left: -50%;
+      transform: rotate(-10deg);
+      opacity: 0.2;
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 3px;
+      background: #e10600;
+      top: 60%;
+      left: -50%;
+      transform: rotate(-10deg);
+      opacity: 0.2;
+    }
+
+    .card {
+      background: #111;
+      padding: 45px;
+      width: 360px;
+      border-radius: 12px;
+      box-shadow: 0 0 40px rgba(225, 6, 0, 0.3);
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo h1 {
+      color: white;
+      font-size: 34px;
+      font-style: italic;
+      letter-spacing: 2px;
+    }
+
+    .logo span {
+      color: #e10600;
+    }
+
+    .logo p {
+      color: #aaa;
+      font-size: 12px;
+      letter-spacing: 3px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: 1px solid #222;
+      background: #1a1a1a;
+      color: white;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: #e10600;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      background: #e10600;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      letter-spacing: 1px;
+    }
+
+    button:hover {
+      background: #b00500;
+      transform: translateY(2px);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    .footer a {
+      color: #e10600;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <h1>F1<span>F0</span></h1>
+      <p>MOTORS</p>
+    </div>
+
+    <form id="loginForm">
+      <input type="text" id="phoneNumber" placeholder="Phone Number" />
+      <input type="password" id="password" placeholder="Password" />
+      <button type="submit">SIGN IN</button>
+    </form>
+
+    <div class="footer">
+      Don’t have an account?
+      <a href="register.html">Sign Up</a>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("loginForm");
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const phoneNumber = document.getElementById("phoneNumber").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!phoneNumber || !password) {
+        Swal.fire({
+          icon: "warning",
+          title: "Fill all fields",
+          text: "Phone number და password ორივე უნდა შეავსო.",
+          background: "#111",
+          color: "#fff",
+          confirmButtonColor: "#E10600"
+        });
+        return;
+      }
+
+      const body = {
+        phoneNumber: phoneNumber,
+        password: password,
+        email: "",
+        firstName: "",
+        lastName: "",
+        role: ""
+      };
+
+      try {
+        const res = await axios.post(
+          "https://rentcar.stepprojects.ge/api/Users/login",
+          body
+        );
+
+        const data = res.data || {};
+
+        const user = {
+          phoneNumber: data.phoneNumber || phoneNumber,
+          firstName: data.firstName || "",
+          lastName: data.lastName || "",
+          email: data.email || "",
+          role: data.role || ""
+        };
+
+        localStorage.setItem("token", data.token || "");
+        localStorage.setItem("user", JSON.stringify(user));
+
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "წარმატებით შეხვედით ანგარიშში",
+          background: "#111",
+          color: "#fff",
+          confirmButtonColor: "#E10600"
+        }).then(() => {
+          location.href = "index.html";
+        });
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Login failed",
+          text: "ნომერი ან პაროლი არასწორია:(())",
+          background: "#111",
+          color: "#fff",
+          confirmButtonColor: "#E10600"
+        });
+      }
+    });
+  </script>
+</body>
+</html>
